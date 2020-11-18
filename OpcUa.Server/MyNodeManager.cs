@@ -12,40 +12,57 @@ namespace OpcUa.Server
         {
 
         }
-
+        
         protected override IEnumerable<IOpcNode> CreateNodes(OpcNodeReferenceCollection references)
         {
-            var number = new OpcDataVariableNode<string>("Number", value: "RTX-2070");
+
+            var machine = new OpcFolderNode(DefaultNamespace.GetName("Machine"));
+            
+            var job = new OpcFolderNode(machine, "Job");
+
+            var number = new OpcDataVariableNode<string>(job, "Number", value: "RTX-2070");
+            var name = new OpcDataVariableNode<string>(job, "Name", value: "JobName");
+            var speed = new OpcDataVariableNode<double>(job, "Speed", value: 123);
+            var test = new OpcDataVariableNode<int[]>(job, "Test", value: new int[] { 1, 2, 3 });
 
             number.ReadVariableValueCallback = HandleReadVariableValue;
             number.WriteVariableValueCallback = HandleWriteVariableValue;
 
-            var job = new OpcObjectNode(
-                "Job",
-                number,
-                new OpcDataVariableNode<string>("Name", value: "JobName"),
-                new OpcDataVariableNode<double>("Speed", value: 123));
-
-
-
-            var machine = new OpcObjectNode(
-                    "Machine",
-                    job);
+            var accelerate = new OpcMethodNode(
+                speed,
+                "Accelerate",
+                new Func<int, int>(Accelerate));
 
             references.Add(machine, OpcObjectTypes.ObjectsFolder);
             yield return machine;
         }
 
+        private int Accelerate(int increaseNumber)
+        {
+            Console.WriteLine("Method called: " + increaseNumber);
+
+            return 3;
+        }
+
         protected override bool IsNodeAccessible(OpcContext context, OpcNodeId viewId, IOpcNodeInfo node)
         {
+            // DefaultNamespace.GetName("Machine") access this method with context.Identity == null
+            // delegate work to default system
+            new OpcFolderNode(new OpcName("Machine", ))
+            if (context.Identity == null)
+            {
+                return base.IsNodeAccessible(context, viewId, node);
+            }
+            
             if (context.Identity.DisplayName == "Anonymous" && node.Name.Value == "Job")
                 return true;
             else if (context.Identity.DisplayName == "Anonymous" && node.Name.Value == "Speed")
                 return true;
-
+            
+            
             return base.IsNodeAccessible(context, viewId, node);
         }
-
+        
 
         // Activate when node variable is read
         private OpcVariableValue<object> HandleReadVariableValue(

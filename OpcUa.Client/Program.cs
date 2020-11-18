@@ -13,17 +13,19 @@ namespace OpcUa.Client
             {
                 client.Connect();
                 Console.WriteLine("Connected");
+                var node = client.BrowseNode(OpcObjectTypes.ObjectsFolder);
                 while (true)
                 {
 
-                    Console.WriteLine("(R/W) Read/Write nodes: ");
+                    Console.Write("(B/R/W) Browse/Read/Write nodes: ");
 
                     var input = Console.ReadLine();
 
                     switch (input)
                     {
-                        case "R": readNodes(client); break;
-                        case "W": writeNodes(client); break;
+                        case "B": Browse(client); break;
+                        case "R": ReadNodes(client); break;
+                        case "W": WriteNodes(client); break;
                         default: break;
                     }
 
@@ -31,34 +33,58 @@ namespace OpcUa.Client
             }
         }
 
-        public static void readNodes(OpcClient client)
+        public static void Browse(OpcClient client, int level = 0)
+        {
+            // Do not show Server node and its children
+            OpcNodeInfo machineNode = client.BrowseNode("ns=2;s=Machine");
+
+            var job = machineNode.Child("Job");
+
+            foreach (var child in job.Children())
+            {
+                Console.WriteLine(child.AttributeValue(OpcAttribute.DisplayName));
+            }
+
+        }
+
+        public static void ReadNodes(OpcClient client)
         {
             OpcReadNode[] commands = new OpcReadNode[] {
                         new OpcReadNode("ns=2;s=Machine/Job/Number"),
                         new OpcReadNode("ns=2;s=Machine/Job/Name"),
                         new OpcReadNode("ns=2;s=Machine/Job/Speed"),
+                        new OpcReadNode("ns=2;s=Machine/Job/Test"),
             };
 
             IEnumerable<OpcValue> nodes = client.ReadNodes(commands);
             foreach (var node in nodes)
             {
-                Console.WriteLine(node);
+                
+                if (node.Status.IsGood)
+                {
+                    Console.WriteLine("* " + node);
+                }
             }
         }
 
-        public static void writeNodes(OpcClient client)
+        public static void WriteNodes(OpcClient client)
         {
+            
             OpcWriteNode[] commands = new OpcWriteNode[] {
                 new OpcWriteNode("ns=2;s=Machine/Job/Number", OpcAttribute.DisplayName, new OpcText("Serial")),
                 new OpcWriteNode("ns=2;s=Machine/Job/Name", OpcAttribute.DisplayName, new OpcText("Description")),
-                new OpcWriteNode("ns=2;s=Machine/Job/Speed", OpcAttribute.DisplayName, new OpcText("Rotations per Second"))
+                new OpcWriteNode("ns=2;s=Machine/Job/Spee", OpcAttribute.DisplayName, new OpcText("Rotations per Second"))
             };
 
             OpcStatusCollection results = client.WriteNodes(commands);
 
             foreach (var result in results)
             {
-                Console.WriteLine(result.Description);
+                if (result.IsBad)
+                {
+                    Console.WriteLine("Failed to write: " + result.Description);
+                }
+                
             }
         }
     }

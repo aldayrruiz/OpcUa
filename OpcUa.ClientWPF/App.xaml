@@ -1,0 +1,24 @@
+﻿<Application
+    x:Class="OpcUa.ClientWPF.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:OpcUa.ClientWPF"
+    xmlns:viewmodels="clr-namespace:OpcUa.ClientWPF.ViewModels"
+    xmlns:views="clr-namespace:OpcUa.ClientWPF.Views">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Common.xaml" />
+                <ResourceDictionary Source="/Styles/NavigationBar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+                <views:HomeView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:ReadViewModel}">
+                <views:ReadView />
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
