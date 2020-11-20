@@ -11,7 +11,7 @@ namespace OpcUa.ClientWPF.Commands
     public class WriteNodeCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
-        private WriteViewModel WriteViewModel { get; set; }
+        public  WriteViewModel WriteViewModel { get; set; }
 
         public WriteNodeCommand(WriteViewModel writeViewModel)
         {
@@ -27,16 +27,8 @@ namespace OpcUa.ClientWPF.Commands
         {
             using(OpcClient client = new OpcClient(WriteViewModel.Address))
             {
-                OpcStatus status = client.WriteNode(WriteViewModel.NodeId, parameter);
-
-                if (status.IsGood)
-                {
-                    // Show good message
-                }
-                else
-                {
-                    // Show error message
-                }
+                client.Connect();
+                WriteViewModel.Status = client.WriteNode(WriteViewModel.NodeId, WriteViewModel.Value);
             }
         }
     }

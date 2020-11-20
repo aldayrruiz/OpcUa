@@ -22,11 +22,12 @@ namespace OpcUa.Server
 
             var number = new OpcDataVariableNode<string>(job, "Number", value: "RTX-2070");
             var name = new OpcDataVariableNode<string>(job, "Name", value: "JobName");
-            var speed = new OpcDataVariableNode<double>(job, "Speed", value: 123);
-            var test = new OpcDataVariableNode<int[]>(job, "Test", value: new int[] { 1, 2, 3 });
+            var speed = new OpcDataVariableNode<int>(job, "Speed", value: 123);
+            //var test = new OpcDataVariableNode<int[]>(job, "Test", value: new int[] { 1, 2, 3 });
 
             number.ReadVariableValueCallback = HandleReadVariableValue;
             number.WriteVariableValueCallback = HandleWriteVariableValue;
+            speed.WriteVariableValueCallback = HandleWriteVariableValue;
 
             var accelerate = new OpcMethodNode(
                 speed,
@@ -93,7 +94,9 @@ namespace OpcUa.Server
                         context.Node.Name,
                         value.Value);
             }
-            return value;
+
+            Console.WriteLine(value.Value.GetType());
+            return new OpcVariableValue<object>(int.Parse(value.Value.ToString()));
         }
     }
 }

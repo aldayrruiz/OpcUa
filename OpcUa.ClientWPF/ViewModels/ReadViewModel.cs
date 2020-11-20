@@ -12,8 +12,13 @@ namespace OpcUa.ClientWPF.ViewModels
 
         public ReadNodeCommand ReadNodeCommand { get; set; }
         public NodeAttributesViewModel NodeAttributesViewModel { get; set; }
+        public ReadViewModel()
+        {
+            Address = "opc.tcp://localhost:4840";
+            ReadNodeCommand = new ReadNodeCommand(this);
+            NodeAttributesViewModel = new NodeAttributesViewModel();
+        }
 
-        
         private string _address;
         public string Address
         {
@@ -40,13 +45,6 @@ namespace OpcUa.ClientWPF.ViewModels
                 _nodeId = value;
                 OnPropertyChanged(nameof(NodeId));
             }
-        }
-
-        public ReadViewModel()
-        {
-            Address = "opc.tcp://localhost:4840";
-            ReadNodeCommand = new ReadNodeCommand(this);
-            NodeAttributesViewModel = new NodeAttributesViewModel();
         }
     }
 }

@@ -23,7 +23,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
@@ -31,7 +31,7 @@
             <Grid Grid.Row="0" Margin="0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" SharedSizeGroup="Label" />
-                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="400" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
@@ -47,7 +47,7 @@
             <Grid Grid.Row="1" Margin="0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" SharedSizeGroup="Label" />
-                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="400" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock
@@ -60,16 +60,17 @@
                     Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
 
-            <TextBlock Grid.Row="2" Text="{Binding Message}" />
+            <TextBlock
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                Text="{Binding StatusMessage}" />
 
             <Button
                 Grid.Row="3"
-                Margin="0,10"
+                Margin="5,0,0,0"
                 HorizontalAlignment="Center"
-                Command="{Binding ????}"
-                Content="Write"
-                IsDefault="True" />
+                Command="{Binding WriteNodeCommand}"
+                Content="Write" />
         </Grid>
-
     </Grid>
 </UserControl>
