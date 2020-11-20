@@ -43,12 +43,11 @@ namespace OpcUa.Server
 
             return 3;
         }
-
+        /*
         protected override bool IsNodeAccessible(OpcContext context, OpcNodeId viewId, IOpcNodeInfo node)
         {
             // DefaultNamespace.GetName("Machine") access this method with context.Identity == null
             // delegate work to default system
-            new OpcFolderNode(new OpcName("Machine", ))
             if (context.Identity == null)
             {
                 return base.IsNodeAccessible(context, viewId, node);
@@ -61,7 +60,7 @@ namespace OpcUa.Server
             
             
             return base.IsNodeAccessible(context, viewId, node);
-        }
+        }*/
         
 
         // Activate when node variable is read

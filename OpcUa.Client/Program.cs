@@ -73,7 +73,7 @@ namespace OpcUa.Client
             OpcWriteNode[] commands = new OpcWriteNode[] {
                 new OpcWriteNode("ns=2;s=Machine/Job/Number", OpcAttribute.DisplayName, new OpcText("Serial")),
                 new OpcWriteNode("ns=2;s=Machine/Job/Name", OpcAttribute.DisplayName, new OpcText("Description")),
-                new OpcWriteNode("ns=2;s=Machine/Job/Spee", OpcAttribute.DisplayName, new OpcText("Rotations per Second"))
+                new OpcWriteNode("ns=2;s=Machine/Job/Speed", OpcAttribute.DisplayName, new OpcText("Rotations per Second"))
             };
 
             OpcStatusCollection results = client.WriteNodes(commands);

@@ -11,21 +11,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace OpcUa.ClientWPF.Views
+namespace OpcUa.ClientWPF.Controls
 {
     /// <summary>
-    /// Interaction logic for ReadView.xaml
+    /// Interaction logic for NodeAttributesCard.xaml
     /// </summary>
-    public partial class ReadView : UserControl
+    public partial class NodeAttributesCard : UserControl
     {
-        public ReadView()
+        public NodeAttributesCard()
         {
             InitializeComponent();
-        }
-
-        private void NodeAttributesCard_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

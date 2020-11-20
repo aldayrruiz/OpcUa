@@ -14,18 +14,13 @@ using System.Windows.Shapes;
 namespace OpcUa.ClientWPF.Views
 {
     /// <summary>
-    /// Interaction logic for ReadView.xaml
+    /// Interaction logic for WriteView.xaml
     /// </summary>
-    public partial class ReadView : UserControl
+    public partial class WriteView : UserControl
     {
-        public ReadView()
+        public WriteView()
         {
             InitializeComponent();
-        }
-
-        private void NodeAttributesCard_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

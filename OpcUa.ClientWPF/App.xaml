@@ -19,6 +19,9 @@
             <DataTemplate DataType="{x:Type viewmodels:ReadViewModel}">
                 <views:ReadView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:WriteViewModel}">
+                <views:WriteView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
