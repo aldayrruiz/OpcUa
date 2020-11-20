@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OpcUa.Server
 {
-    public class MyNodeManager : OpcNodeManager
+    partial class MyNodeManager : OpcNodeManager
     {
         public MyNodeManager() : base("http://ServerApp/nodes")
         {
@@ -23,27 +23,28 @@ namespace OpcUa.Server
             var number = new OpcDataVariableNode<string>(job, "Number", value: "RTX-2070");
             var name = new OpcDataVariableNode<string>(job, "Name", value: "JobName");
             var speed = new OpcDataVariableNode<int>(job, "Speed", value: 123);
-            //var test = new OpcDataVariableNode<int[]>(job, "Test", value: new int[] { 1, 2, 3 });
+            var calculator = new OpcObjectNode(job, "Calculator");
 
             number.ReadVariableValueCallback = HandleReadVariableValue;
             number.WriteVariableValueCallback = HandleWriteVariableValue;
             speed.WriteVariableValueCallback = HandleWriteVariableValue;
 
-            var accelerate = new OpcMethodNode(
-                speed,
-                "Accelerate",
-                new Func<int, int>(Accelerate));
+            SetCalculatorMethods(calculator);
 
             references.Add(machine, OpcObjectTypes.ObjectsFolder);
             yield return machine;
         }
 
-        private int Accelerate(int increaseNumber)
-        {
-            Console.WriteLine("Method called: " + increaseNumber);
 
-            return 3;
+        private void SetCalculatorMethods(OpcObjectNode calculator)
+        {
+            var add = new OpcMethodNode(calculator, "Add", new Func<double, double, double>(Add));
+            var substract = new OpcMethodNode(calculator, "Substract", new Func<double, double, double>(Substract));
+            var multiply = new OpcMethodNode(calculator, "Multiply", new Func<double, double, double>(Multiply));
+            var divide = new OpcMethodNode(calculator, "Divide", new Func<double, double, double>(Divide));
         }
+
+
         /*
         protected override bool IsNodeAccessible(OpcContext context, OpcNodeId viewId, IOpcNodeInfo node)
         {
