@@ -1,35 +1,23 @@
-﻿using System;
+﻿using OpcUa.ClientWPF.Commands;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace OpcUa.ClientWPF.ViewModels
 {
-    public enum Operation
-    {
-        ADDITTION, SUBTRACTION, DIVISION, MULTIPLICATION
-    }
-
     public class CallViewModel : ViewModelBase
     {
+        public CallMethodNodeCommand CallMethodNodeCommand { get; set; }
 
-        private string _nodeId;
-        public string NodeId
+        public CallViewModel()
         {
-            get
-            {
-                return _nodeId;
-            }
-            set
-            {
-                _nodeId = value;
-                OnPropertyChanged(nameof(NodeId));
-            }
-
+            Address = "opc.tcp://localhost:4840"; // TODO: Make this variable available to all views. One single Address
+            CallMethodNodeCommand = new CallMethodNodeCommand(this);
         }
 
         // Input variables
-        private int _x;
-        public int X
+        private double _x;
+        public double X
         {
             get
             {
@@ -42,8 +30,8 @@ namespace OpcUa.ClientWPF.ViewModels
             }
         }
 
-        private int _y;
-        public int Y
+        private double _y;
+        public double Y
         {
             get
             {
@@ -70,12 +58,46 @@ namespace OpcUa.ClientWPF.ViewModels
             }
         }
 
-        public Operation operation;
+        public string _method;
+        public string Method
+        {
+            get
+            {
+                return _method;
+            }
+            set
+            {
+                _method = value;
+                OnPropertyChanged(nameof(Method));
+            }
+        }
 
+        public string _result;
+        public string Result
+        {
+            get
+            {
+                return _result;
+            }
+            set
+            {
+                _result = value;
+                OnPropertyChanged(nameof(Result));
+            }
+        }
 
-
-        
+        public string _errorMessage;
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+                OnPropertyChanged(nameof(ErrorMessage));
+            }
+        }
     }
-
-    
 }

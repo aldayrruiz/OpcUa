@@ -17,19 +17,21 @@ namespace OpcUa.Server
         {
 
             var machine = new OpcFolderNode(DefaultNamespace.GetName("Machine"));
-            
+            var calculator = new OpcObjectNode(machine, "Calculator");
+            SetCalculatorMethods(calculator);
+
             var job = new OpcFolderNode(machine, "Job");
 
             var number = new OpcDataVariableNode<string>(job, "Number", value: "RTX-2070");
             var name = new OpcDataVariableNode<string>(job, "Name", value: "JobName");
             var speed = new OpcDataVariableNode<int>(job, "Speed", value: 123);
-            var calculator = new OpcObjectNode(job, "Calculator");
+            
 
             number.ReadVariableValueCallback = HandleReadVariableValue;
             number.WriteVariableValueCallback = HandleWriteVariableValue;
             speed.WriteVariableValueCallback = HandleWriteVariableValue;
 
-            SetCalculatorMethods(calculator);
+            
 
             references.Add(machine, OpcObjectTypes.ObjectsFolder);
             yield return machine;

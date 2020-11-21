@@ -22,6 +22,9 @@
             <DataTemplate DataType="{x:Type viewmodels:WriteViewModel}">
                 <views:WriteView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:CallViewModel}">
+                <views:CallView />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
