@@ -17,7 +17,7 @@ namespace OpcUa.Client
                 while (true)
                 {
 
-                    Console.Write("(B/R/W/S) Browse/Read/Write nodes: ");
+                    Console.Write("(B/R/W/S) Browse/Read/Write/Subscribe nodes: ");
 
                     var input = Console.ReadLine();
 
