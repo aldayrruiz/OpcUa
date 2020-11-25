@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace OpcUa.ClientWPF.Views
 {
     /// <summary>
-    /// Interaction logic for HomeView.xaml
+    /// Interaction logic for SubscribeView.xaml
     /// </summary>
-    public partial class HomeView : UserControl
+    public partial class SubscribeView : UserControl
     {
-        public HomeView()
+        public SubscribeView()
         {
             InitializeComponent();
         }

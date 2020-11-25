@@ -14,11 +14,12 @@ namespace OpcUa.ClientWPF.ViewModels
         public NodeAttributesViewModel NodeAttributesViewModel { get; set; }
         public ReadViewModel()
         {
-            Address = "opc.tcp://localhost:4840";
+            Address = "https://localhost:4840";
             ReadNodeCommand = new ReadNodeCommand(this);
             NodeAttributesViewModel = new NodeAttributesViewModel();
         }
 
+        // Change for Uri
         private string _address;
         public string Address
         {

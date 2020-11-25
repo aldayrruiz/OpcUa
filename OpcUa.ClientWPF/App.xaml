@@ -13,9 +13,6 @@
                 <ResourceDictionary Source="/Styles/NavigationBar.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
-                <views:HomeView />
-            </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:ReadViewModel}">
                 <views:ReadView />
             </DataTemplate>
@@ -24,6 +21,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:CallViewModel}">
                 <views:CallView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:SubscribeViewModel}">
+                <views:SubscribeView />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

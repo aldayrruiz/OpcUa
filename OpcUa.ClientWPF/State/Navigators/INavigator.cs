@@ -8,7 +8,6 @@ namespace OpcUa.ClientWPF.State.Navigators
 {
     public enum ViewType
     {
-        Home,
         Read,
         Write,
         Call,

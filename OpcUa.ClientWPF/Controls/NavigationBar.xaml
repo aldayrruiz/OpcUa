@@ -45,11 +45,6 @@
             </Grid.ColumnDefinitions>
 
             <RadioButton
-                Grid.Column="0"
-                Command="{Binding UpdateCurrentViewModelCommand}"
-                CommandParameter="{x:Static navs:ViewType.Home}"
-                Content="Home" />
-            <RadioButton
                 Grid.Column="1"
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static navs:ViewType.Read}"

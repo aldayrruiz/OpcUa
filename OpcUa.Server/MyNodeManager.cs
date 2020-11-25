@@ -28,7 +28,6 @@ namespace OpcUa.Server
             
 
             number.ReadVariableValueCallback = HandleReadVariableValue;
-            number.WriteVariableValueCallback = HandleWriteVariableValue;
             speed.WriteVariableValueCallback = HandleWriteVariableValue;
 
             

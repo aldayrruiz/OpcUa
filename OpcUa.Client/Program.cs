@@ -9,7 +9,7 @@ namespace OpcUa.Client
     {
         public static void Main()
         {
-            using (var client = new OpcClient("opc.tcp://localhost:4840"))
+            using (var client = new OpcClient("https://localhost:4840"))
             {
                 client.Connect();
                 Console.WriteLine("Connected");
@@ -17,7 +17,7 @@ namespace OpcUa.Client
                 while (true)
                 {
 
-                    Console.Write("(B/R/W) Browse/Read/Write nodes: ");
+                    Console.Write("(B/R/W/S) Browse/Read/Write nodes: ");
 
                     var input = Console.ReadLine();
 
@@ -26,6 +26,7 @@ namespace OpcUa.Client
                         case "B": Browse(client); break;
                         case "R": ReadNodes(client); break;
                         case "W": WriteNodes(client); break;
+                        case "S": SubscribeNode(client); break;
                         default: break;
                     }
 
@@ -69,14 +70,18 @@ namespace OpcUa.Client
 
         public static void WriteNodes(OpcClient client)
         {
-            
+            var rand = new Random();
+            int randomNumber = rand.Next();
+
             OpcWriteNode[] commands = new OpcWriteNode[] {
-                new OpcWriteNode("ns=2;s=Machine/Job/Number", OpcAttribute.DisplayName, new OpcText("Serial")),
-                new OpcWriteNode("ns=2;s=Machine/Job/Name", OpcAttribute.DisplayName, new OpcText("Description")),
-                new OpcWriteNode("ns=2;s=Machine/Job/Speed", OpcAttribute.DisplayName, new OpcText("Rotations per Second"))
+                // new OpcWriteNode("ns=2;s=Machine/Job/Number", OpcAttribute.DisplayName, new OpcText("Serial")),
+                // new OpcWriteNode("ns=2;s=Machine/Job/Name", OpcAttribute.DisplayName, new OpcText("Description")),
+                new OpcWriteNode("ns=2;s=Machine/Job/Speed", randomNumber)
             };
 
             OpcStatusCollection results = client.WriteNodes(commands);
+
+            Console.WriteLine("Changing ns=2;s=Machine/Job/Speed value for: " + randomNumber);
 
             foreach (var result in results)
             {
@@ -86,6 +91,24 @@ namespace OpcUa.Client
                 }
                 
             }
+        }
+
+        public static void SubscribeNode(OpcClient client)
+        {
+            OpcSubscription subscription = client.SubscribeDataChange(
+                    "ns=2;s=Machine/Job/Speed",
+                    HandleDataChanged);
+            subscription.ApplyChanges();
+        }
+
+        private static void HandleDataChanged(object sender, OpcDataChangeReceivedEventArgs e)
+        {
+            OpcMonitoredItem item = (OpcMonitoredItem)sender;
+
+            Console.WriteLine(
+                    "Data Change from NodeId '{0}': {1}",
+                    item.NodeId,
+                    e.Item.Value);
         }
     }
 }

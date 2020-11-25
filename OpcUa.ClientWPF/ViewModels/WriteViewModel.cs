@@ -12,10 +12,11 @@ namespace OpcUa.ClientWPF.ViewModels
 
         public WriteViewModel()
         {
-            Address = "opc.tcp://localhost:4840";
+            Address = "https://localhost:4840";
             WriteNodeCommand = new WriteNodeCommand(this);
         }
 
+        // Change for Uri 
         private string _address;
         public string Address
         {

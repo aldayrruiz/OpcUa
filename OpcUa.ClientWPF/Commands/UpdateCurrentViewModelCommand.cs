@@ -1,6 +1,5 @@
 ﻿using OpcUa.ClientWPF.State.Navigators;
 using OpcUa.ClientWPF.ViewModels;
-using OpcUa.ClientWPF.ViewModels.Factories;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,8 +33,6 @@ namespace OpcUa.ClientWPF.Commands
                 // _navigator.CurrentViewModel = _viewModelFactory.CreateViewModel(viewType);
                 switch (viewType)
                 {
-                    case ViewType.Home:
-                        _navigator.CurrentViewModel = new HomeViewModel(); break;
                     case ViewType.Read:
                         _navigator.CurrentViewModel = new ReadViewModel(); break;
                     case ViewType.Write:

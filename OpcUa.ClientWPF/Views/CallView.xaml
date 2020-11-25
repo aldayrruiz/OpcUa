@@ -124,7 +124,7 @@
 
                 <Button
                     Grid.Row="5"
-                    Margin="0,5"
+                    Margin="10,5"
                     HorizontalAlignment="Center"
                     Command="{Binding CallMethodNodeCommand}"
                     Content="Call" />
