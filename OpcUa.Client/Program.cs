@@ -34,18 +34,57 @@ namespace OpcUa.Client
             }
         }
 
-        public static void Browse(OpcClient client, int level = 0)
+        public static void Browse(OpcClient client)
         {
             // Do not show Server node and its children
             OpcNodeInfo machineNode = client.BrowseNode("ns=2;s=Machine");
+            Browse(machineNode);
+        }
 
-            var job = machineNode.Child("Job");
-
-            foreach (var child in job.Children())
+        public static void Browse(OpcNodeInfo node, int level = 0)
+        {
+            foreach (var child in node.Children())
             {
-                Console.WriteLine(child.AttributeValue(OpcAttribute.DisplayName));
-            }
+                switch (child.Category)
+                {
+                    case OpcNodeCategory.Unspecified:
+                    case OpcNodeCategory.Object:
+                        DisplayNode(child, level++);
+                        Browse(child, level); break;
+                    case OpcNodeCategory.Variable:
+                        DisplayNode(child, level); break;
 
+                    case OpcNodeCategory.Method:
+                        BrowseMethod((OpcMethodNodeInfo)child, level); break;
+
+                    case OpcNodeCategory.ObjectType:
+                    case OpcNodeCategory.VariableType:
+                    case OpcNodeCategory.ReferenceType:
+                    case OpcNodeCategory.DataType:
+                    case OpcNodeCategory.View:
+                        DisplayNode(child, level); break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        // Display a node of type general by the moment
+        public static void DisplayNode(OpcNodeInfo node, int level = 0)
+        {
+            Console.WriteLine("{0}{1}: {2}", new string('.', level++ * 2), node.DisplayName, node.Category);
+        }
+
+        // Display a node of type method
+        public static void BrowseMethod(OpcMethodNodeInfo node, int level = 0)
+        {
+            Console.WriteLine("{0}METHOD {1} args:", new string('.', level++ * 2), node.DisplayName);
+            int argN = 0;
+            foreach (var argument in node.GetInputArguments())
+            {
+                Console.WriteLine("{0} arg{1}: {2}", new string('.', level * 2), ++argN, argument.Name);
+            }
         }
 
         public static void ReadNodes(OpcClient client)
@@ -60,7 +99,6 @@ namespace OpcUa.Client
             IEnumerable<OpcValue> nodes = client.ReadNodes(commands);
             foreach (var node in nodes)
             {
-                
                 if (node.Status.IsGood)
                 {
                     Console.WriteLine("* " + node);
