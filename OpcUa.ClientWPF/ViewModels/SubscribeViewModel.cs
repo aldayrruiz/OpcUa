@@ -163,6 +163,9 @@ namespace OpcUa.ClientWPF.ViewModels
                         nodeId,
                         HandleDataChangeReceived);
 
+                subscription.PublishingInterval = 2000;
+                subscription.ApplyChanges();
+
                 var monitoredItem = subscription.MonitoredItems[0];
                 var monitoredItemStatus = monitoredItem.Status;
 

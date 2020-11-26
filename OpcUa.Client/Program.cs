@@ -55,7 +55,7 @@ namespace OpcUa.Client
                         DisplayNode(child, level); break;
 
                     case OpcNodeCategory.Method:
-                        BrowseMethod((OpcMethodNodeInfo)child, level); break;
+                        DisplayMethodNode((OpcMethodNodeInfo)child, level); break;
 
                     case OpcNodeCategory.ObjectType:
                     case OpcNodeCategory.VariableType:
@@ -63,7 +63,6 @@ namespace OpcUa.Client
                     case OpcNodeCategory.DataType:
                     case OpcNodeCategory.View:
                         DisplayNode(child, level); break;
-
                     default:
                         break;
                 }
@@ -77,7 +76,7 @@ namespace OpcUa.Client
         }
 
         // Display a node of type method
-        public static void BrowseMethod(OpcMethodNodeInfo node, int level = 0)
+        public static void DisplayMethodNode(OpcMethodNodeInfo node, int level = 0)
         {
             Console.WriteLine("{0}METHOD {1} args:", new string('.', level++ * 2), node.DisplayName);
             int argN = 0;
@@ -136,6 +135,7 @@ namespace OpcUa.Client
             OpcSubscription subscription = client.SubscribeDataChange(
                     "ns=2;s=Machine/Job/Speed",
                     HandleDataChanged);
+            subscription.PublishingInterval = 2000;
             subscription.ApplyChanges();
         }
 
