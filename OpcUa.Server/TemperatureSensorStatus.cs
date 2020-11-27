@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpcUa.Server
 {
-    [OpcDataType(id: "TemperatureSensorStatus", namespaceIndex:2)]
+    [OpcDataType(id: "StatusTemperatureSensor", namespaceIndex:2)]
     internal enum TemperatureSensorStatus : int
     {
         [OpcEnumMember("Started", Description = "Temperature sensor is working.")]

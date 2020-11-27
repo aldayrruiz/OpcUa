@@ -35,9 +35,13 @@ namespace OpcUa.Server
 
             // Creates a temperature sensor with variables like: temperature and status
             var temperatureSensor = new OpcObjectNode(machine, name: "TemperatureSensor");
-            var temperature = new OpcDataVariableNode<int>(temperatureSensor, 
-                name: "Temperature", 
-                value: 20);
+            var temperature = new OpcAnalogItemNode<float>(temperatureSensor, name: "Temperature", value: 20)
+            {
+                InstrumentRange = new OpcValueRange(80.0, -40.0), // range of values returned by the instrument
+                EngineeringUnit = new OpcEngineeringUnitInfo(4408652, "°C", "degree Celsius"), // UNECE units of measure in OPC UA
+                EngineeringUnitRange = new OpcValueRange(70.8, 5.0) // range of values which applies to normal operation
+            };
+
             new OpcDataVariableNode<TemperatureSensorStatus>(temperatureSensor, 
                 name: "StatusTemperatureSensor", 
                 value: TemperatureSensorStatus.Started);
