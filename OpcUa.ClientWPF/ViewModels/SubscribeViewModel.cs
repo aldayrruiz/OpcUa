@@ -26,7 +26,7 @@ namespace OpcUa.ClientWPF.ViewModels
             address = new Uri("https://localhost:4840");
             addressStatus = "Enter address of server.";
 
-            nodeId = "ns=2;s=MyNode";
+            nodeId = "ns=2;s=Machine/Job/Speed";
             nodeStatus = "Enter a node identifier and click 'Subscribe'.";
 
             SubscribeCommand = new SubscribeNodeCommand(

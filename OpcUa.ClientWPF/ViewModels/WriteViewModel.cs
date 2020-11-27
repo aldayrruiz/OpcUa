@@ -13,6 +13,7 @@ namespace OpcUa.ClientWPF.ViewModels
         public WriteViewModel()
         {
             Address = "https://localhost:4840";
+            NodeId = "ns=2;s=Machine/Job/Speed";
             WriteNodeCommand = new WriteNodeCommand(this);
         }
 

@@ -15,6 +15,7 @@ namespace OpcUa.ClientWPF.ViewModels
         public ReadViewModel()
         {
             Address = "https://localhost:4840";
+            NodeId = "ns=2;s=Machine/Job/Speed";
             ReadNodeCommand = new ReadNodeCommand(this);
             NodeAttributesViewModel = new NodeAttributesViewModel();
         }
