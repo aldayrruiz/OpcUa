@@ -16,24 +16,37 @@ namespace OpcUa.Server
         protected override IEnumerable<IOpcNode> CreateNodes(OpcNodeReferenceCollection references)
         {
 
+            // Creates machine node and adds it to root node
             var machine = new OpcFolderNode(DefaultNamespace.GetName("Machine"));
-            var calculator = new OpcObjectNode(machine, "Calculator");
+            references.Add(machine, OpcObjectTypes.ObjectsFolder);
+
+            // Creates and adds machine status to machine node
+            new OpcDataVariableNode<MachineStatus>(machine, name: "Status", value: MachineStatus.Started);
+
+            // Creates calculator and set its methods
+            var calculator = new OpcObjectNode(machine, name: "Calculator");
             SetCalculatorMethods(calculator);
 
-            var job = new OpcFolderNode(machine, "Job");
+            // Creates job node and adds its children (number, name, speed)
+            var job = new OpcFolderNode(machine, name: "Job");
+            var number = new OpcDataVariableNode<string>(job, name: "Number", value: "RTX-2070");
+            var name = new OpcDataVariableNode<string>(job, name: "Name", value: "JobName");
+            var speed = new OpcDataVariableNode<int>(job, name: "Speed", value: 123); ;
 
-            var number = new OpcDataVariableNode<string>(job, "Number", value: "RTX-2070");
-            var name = new OpcDataVariableNode<string>(job, "Name", value: "JobName");
-            var speed = new OpcDataVariableNode<int>(job, "Speed", value: 123);
-            
+            // Creates a temperature sensor with variables like: temperature and status
+            var temperatureSensor = new OpcObjectNode(machine, name: "TemperatureSensor");
+            var temperature = new OpcDataVariableNode<int>(temperatureSensor, 
+                name: "Temperature", 
+                value: 20);
+            new OpcDataVariableNode<TemperatureSensorStatus>(temperatureSensor, 
+                name: "StatusTemperatureSensor", 
+                value: TemperatureSensorStatus.Started);
 
+            // Handle client requests (read and write).
             number.ReadVariableValueCallback = HandleReadVariableValue;
             speed.WriteVariableValueCallback = HandleWriteVariableValue;
 
-            
-
-            references.Add(machine, OpcObjectTypes.ObjectsFolder);
-            yield return machine;
+            return new IOpcNode[] { machine, new OpcDataTypeNode<MachineStatus>() };
         }
 
 
