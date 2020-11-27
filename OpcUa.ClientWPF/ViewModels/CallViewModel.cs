@@ -11,7 +11,7 @@ namespace OpcUa.ClientWPF.ViewModels
 
         public CallViewModel()
         {
-            Address = "https://localhost:4840"; // TODO: Make this variable available to all views. One single Address?
+            Address = "https://localhost/"; // TODO: Make this variable available to all views. One single Address?
             CallMethodNodeCommand = new CallMethodNodeCommand(this);
         }
 

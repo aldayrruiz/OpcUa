@@ -23,7 +23,7 @@ namespace OpcUa.ClientWPF.ViewModels
         public SubscribeViewModel()
             : base()
         {
-            address = new Uri("https://localhost:4840");
+            address = new Uri("https://localhost/");
             addressStatus = "Enter address of server.";
 
             nodeId = "ns=2;s=Machine/Job/Speed";

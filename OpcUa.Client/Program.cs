@@ -9,7 +9,7 @@ namespace OpcUa.Client
     {
         public static void Main()
         {
-            using (var client = new OpcClient("https://localhost:4840"))
+            using (var client = new OpcClient("https://localhost/"))
             {
                 client.Connect();
                 Console.WriteLine("Connected");

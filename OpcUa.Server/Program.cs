@@ -1,26 +1,27 @@
 ﻿using Opc.UaFx.Server;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace OpcUa.Server
 {
     class Program
     {
+
         public static void Main()
         {
-
-            var uri = "https://localhost:4840/";
-            OpcNodeManager nodeManager = new MyNodeManager();
-            using (var server = new OpcServer(uri, nodeManager))
+            IList<string> uris = new List<string>
             {
-                server.Start();
-                Console.WriteLine("Server started: " + uri);
-                while (true)
-                {
+                "opc.tcp://localhost:4840/",
+                "https://localhost/"
+            };
 
-                    Thread.Sleep(1000);
-                }
-            }
+            OpcNodeManager nodeManager = new MyNodeManager();
+
+            ServerStarter serverStarter = new ServerStarter(uris, nodeManager);
+
+            serverStarter.StartServer();
         }
     }
 }
