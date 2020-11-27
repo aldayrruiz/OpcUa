@@ -9,7 +9,7 @@ namespace OpcUa.Server
         public static void Main()
         {
 
-            var uri = "opc.tcp://localhost:4840/";
+            var uri = "https://localhost:4840/";
             OpcNodeManager nodeManager = new MyNodeManager();
             using (var server = new OpcServer(uri, nodeManager))
             {
