@@ -1,6 +1,7 @@
 ﻿using Opc.UaFx;
 using Opc.UaFx.Client;
 using OpcUa.ClientWPF.Commands;
+using OpcUa.ClientWPF.State.Clients;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,28 +12,24 @@ namespace OpcUa.ClientWPF.ViewModels
     {
 
         public ReadNodeCommand ReadNodeCommand { get; set; }
-        public NodeAttributesViewModel NodeAttributesViewModel { get; set; }
-        public ReadViewModel()
-        {
-            Address = "https://localhost/";
-            NodeId = "ns=2;s=Machine/Job/Speed";
-            ReadNodeCommand = new ReadNodeCommand(this);
-            NodeAttributesViewModel = new NodeAttributesViewModel();
-        }
-
-        // Change for Uri
-        private string _address;
-        public string Address
+        private NodeAttributesViewModel _nodeAttributesViewModel;
+        public NodeAttributesViewModel NodeAttributesViewModel
         {
             get
             {
-                return _address;
+                return _nodeAttributesViewModel;
             }
             set
             {
-                _address = value;
-                OnPropertyChanged(nameof(Address));
+                _nodeAttributesViewModel = value;
+                OnPropertyChanged(nameof(NodeAttributesViewModel));
             }
+        }
+
+        public ReadViewModel(IClientStore clientStore)
+        {
+            NodeId = "ns=2;s=Machine/Job/Speed";
+            ReadNodeCommand = new ReadNodeCommand(this, clientStore);
         }
 
         private string _nodeId;

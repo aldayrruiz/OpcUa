@@ -1,5 +1,6 @@
 ﻿using Opc.UaFx;
 using OpcUa.ClientWPF.Commands;
+using OpcUa.ClientWPF.State.Clients;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,26 +11,10 @@ namespace OpcUa.ClientWPF.ViewModels
     {
         public WriteNodeCommand WriteNodeCommand { get; set; }
 
-        public WriteViewModel()
+        public WriteViewModel(IClientStore clientStore)
         {
-            Address = "https://localhost/";
             NodeId = "ns=2;s=Machine/Job/Speed";
-            WriteNodeCommand = new WriteNodeCommand(this);
-        }
-
-        // Change for Uri 
-        private string _address;
-        public string Address
-        {
-            get
-            {
-                return _address;
-            }
-            set
-            {
-                _address = value;
-                OnPropertyChanged(nameof(Address));
-            }
+            WriteNodeCommand = new WriteNodeCommand(this, clientStore);
         }
 
         private string _nodeId;
@@ -72,7 +57,7 @@ namespace OpcUa.ClientWPF.ViewModels
             set
             {
                 _status = value;
-                StatusMessage = Status.Description;
+                StatusMessage = Status?.Description;
                 OnPropertyChanged(nameof(StatusMessage));
             }
         }

@@ -23,31 +23,11 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid
                 Grid.Row="0"
-                Margin="0,10"
-                HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" SharedSizeGroup="Label" />
-                    <ColumnDefinition Width="400" />
-                </Grid.ColumnDefinitions>
-                <Label
-                    Grid.Column="0"
-                    HorizontalAlignment="Center"
-                    Content="Address of Server:" />
-
-                <TextBox
-                    Grid.Column="1"
-                    Margin="20,0,0,0"
-                    Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" />
-            </Grid>
-
-            <Grid
-                Grid.Row="1"
                 Margin="0,10"
                 HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
@@ -62,18 +42,20 @@
                 <TextBox
                     Grid.Column="1"
                     Margin="20,0,0,0"
+                    VerticalContentAlignment="Center"
                     Text="{Binding NodeId, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
 
             <Button
-                Grid.Row="2"
-                Margin="5,0,0,0"
+                Grid.Row="1"
+                Margin="10,10"
+                Padding="15,0"
                 HorizontalAlignment="Center"
                 Command="{Binding ReadNodeCommand}"
                 Content="Read" />
 
             <controls:NodeAttributesCard
-                Grid.Row="3"
+                Grid.Row="2"
                 Padding="10,20"
                 DataContext="{Binding NodeAttributesViewModel}"
                 Loaded="NodeAttributesCard_Loaded" />

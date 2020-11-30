@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Opc.UaFx;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -50,7 +51,19 @@ namespace OpcUa.ClientWPF.ViewModels
             }
         }
 
-        public void setAttributes(string displayName, string value, string serverTimeStamp)
+        public static NodeAttributesViewModel LoadNodeAttributes(OpcValue displayName, OpcValue value)
+        {
+            NodeAttributesViewModel nodeAttributesViewModel = new NodeAttributesViewModel();
+
+            nodeAttributesViewModel.SetAttributes(
+                displayName: displayName.Value.ToString(),
+                value: value.Value.ToString(),
+                serverTimeStamp: value.ServerTimestamp.ToString());
+
+            return nodeAttributesViewModel;
+        }
+
+        public void SetAttributes(string displayName, string value, string serverTimeStamp)
         {
             DisplayName = displayName;
             Value = value;

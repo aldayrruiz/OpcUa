@@ -64,6 +64,7 @@
                 <TextBox
                     Grid.Column="1"
                     Margin="20,0,0,0"
+                    VerticalContentAlignment="Center"
                     Text="{Binding NodeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
 
@@ -81,6 +82,7 @@
                 <TextBox
                     Grid.Column="1"
                     Margin="20,0,0,0"
+                    VerticalContentAlignment="Center"
                     IsReadOnly="True"
                     Text="{Binding NodeValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
@@ -92,6 +94,8 @@
 
             <Button
                 Grid.Row="5"
+                Margin="10,10"
+                Padding="15,0"
                 HorizontalAlignment="Center"
                 Command="{Binding SubscribeCommand}"
                 Content="_Subscribe" />

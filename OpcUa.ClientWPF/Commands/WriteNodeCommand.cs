@@ -1,5 +1,6 @@
 ﻿using Opc.UaFx;
 using Opc.UaFx.Client;
+using OpcUa.ClientWPF.State.Clients;
 using OpcUa.ClientWPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,19 @@ namespace OpcUa.ClientWPF.Commands
     {
         public event EventHandler CanExecuteChanged;
         public  WriteViewModel WriteViewModel { get; set; }
+        private readonly IClientStore _clientStore;
+        private OpcClient Client
+        {
+            get
+            {
+                return _clientStore.CurrentClient;
+            }
+        }
 
-        public WriteNodeCommand(WriteViewModel writeViewModel)
+        public WriteNodeCommand(WriteViewModel writeViewModel, IClientStore clientStore)
         {
             WriteViewModel = writeViewModel;
+            _clientStore = clientStore;
         }
 
         public bool CanExecute(object parameter)
@@ -25,11 +35,7 @@ namespace OpcUa.ClientWPF.Commands
 
         public void Execute(object parameter)
         {
-            using(OpcClient client = new OpcClient(WriteViewModel.Address))
-            {
-                client.Connect();
-                WriteViewModel.Status = client.WriteNode(WriteViewModel.NodeId, WriteViewModel.Value);
-            }
+            WriteViewModel.Status = Client?.WriteNode(WriteViewModel.NodeId, WriteViewModel.Value);
         }
     }
 }

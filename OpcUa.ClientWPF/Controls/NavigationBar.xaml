@@ -2,20 +2,26 @@
     x:Class="OpcUa.ClientWPF.Controls.NavigationBar"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:OpcUa.ClientWPF.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:OpcUa.ClientWPF.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navs="clr-namespace:OpcUa.ClientWPF.State.Navigators"
+    xmlns:vm="clr-namespace:OpcUa.ClientWPF.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
+
+    <UserControl.Resources>
+        <converters:EqualValueToParameterConverter x:Key="EqualValueToParameterConverter" />
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-
         <TextBlock
             Grid.Row="0"
             Padding="10"
@@ -48,22 +54,26 @@
                 Grid.Column="1"
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static navs:ViewType.Read}"
-                Content="Read" />
+                Content="Read"
+                IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type vm:ReadViewModel}}" />
             <RadioButton
                 Grid.Column="2"
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static navs:ViewType.Write}"
-                Content="Write" />
+                Content="Write"
+                IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type vm:WriteViewModel}}" />
             <RadioButton
                 Grid.Column="3"
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static navs:ViewType.Call}"
-                Content="Call" />
+                Content="Call"
+                IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type vm:CallViewModel}}" />
             <RadioButton
                 Grid.Column="4"
                 Command="{Binding UpdateCurrentViewModelCommand}"
                 CommandParameter="{x:Static navs:ViewType.Subscribe}"
-                Content="Subscribe" />
+                Content="Subscribe"
+                IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type vm:SubscribeViewModel}}" />
         </Grid>
     </Grid>
 </UserControl>

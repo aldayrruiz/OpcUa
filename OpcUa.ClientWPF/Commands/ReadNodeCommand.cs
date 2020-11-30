@@ -1,5 +1,6 @@
 ﻿using Opc.UaFx;
 using Opc.UaFx.Client;
+using OpcUa.ClientWPF.State.Clients;
 using OpcUa.ClientWPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,19 @@ namespace OpcUa.ClientWPF.Commands
     {
         public event EventHandler CanExecuteChanged;
         public ReadViewModel ReadViewModel;
-        public OpcClient Client;
+        private readonly IClientStore _clientStore;
+        private OpcClient Client
+        {
+            get
+            {
+                return _clientStore.CurrentClient;
+            }
+        }
 
-        public ReadNodeCommand(ReadViewModel readViewModel)
+        public ReadNodeCommand(ReadViewModel readViewModel, IClientStore clientStore)
         {
             ReadViewModel = readViewModel;
+            _clientStore = clientStore;
         }
 
         public bool CanExecute(object parameter)
@@ -26,10 +35,8 @@ namespace OpcUa.ClientWPF.Commands
 
         public void Execute(object parameter)
         {
-            using (Client = new OpcClient(ReadViewModel.Address))
+            if (Client?.State == OpcClientState.Connected)
             {
-                Client.Connect();
-
                 if (!string.IsNullOrEmpty(ReadViewModel.NodeId))
                 {
                     string nodeId = ReadViewModel.NodeId;
@@ -40,12 +47,8 @@ namespace OpcUa.ClientWPF.Commands
 
                     if (value.Status.IsGood && displayName.Status.IsGood)
                     {
-                        ReadViewModel.NodeAttributesViewModel.setAttributes(
-                            displayName: displayName.Value.ToString(),
-                            value: value.Value.ToString(),
-                            serverTimeStamp: value.ServerTimestamp.ToString()
-                        );
-                    } 
+                        ReadViewModel.NodeAttributesViewModel = NodeAttributesViewModel.LoadNodeAttributes(displayName, value);
+                    }
                     else
                     {
                         // Show a message error

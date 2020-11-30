@@ -7,6 +7,7 @@ using System.Text;
 
 namespace OpcUa.ClientWPF.ViewModels
 {
+    // TODO: Use ServerAddress of ServerAddressViewModel
     public class SubscribeViewModel : ViewModelBase
     {
         private Uri address;

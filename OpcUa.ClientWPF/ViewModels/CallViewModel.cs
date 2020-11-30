@@ -1,4 +1,5 @@
 ﻿using OpcUa.ClientWPF.Commands;
+using OpcUa.ClientWPF.State.Clients;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,10 +10,10 @@ namespace OpcUa.ClientWPF.ViewModels
     {
         public CallMethodNodeCommand CallMethodNodeCommand { get; set; }
 
-        public CallViewModel()
+        public CallViewModel(IClientStore clientStore)
         {
             Address = "https://localhost/"; // TODO: Make this variable available to all views. One single Address?
-            CallMethodNodeCommand = new CallMethodNodeCommand(this);
+            CallMethodNodeCommand = new CallMethodNodeCommand(this, clientStore);
         }
 
         // Input variables

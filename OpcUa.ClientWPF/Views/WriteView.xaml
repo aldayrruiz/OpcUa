@@ -25,27 +25,9 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
-            <!--  Node Id input  -->
             <Grid Grid.Row="0" Margin="0,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" SharedSizeGroup="Label" />
-                    <ColumnDefinition Width="400" />
-                </Grid.ColumnDefinitions>
-                <Label
-                    Grid.Column="0"
-                    HorizontalAlignment="Center"
-                    Content="Address of Server:" />
-
-                <TextBox
-                    Grid.Column="1"
-                    Margin="20,0,0,0"
-                    Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" />
-            </Grid>
-
-            <Grid Grid.Row="1" Margin="0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" SharedSizeGroup="Label" />
                     <ColumnDefinition Width="400" />
@@ -58,10 +40,11 @@
                 <TextBox
                     Grid.Column="1"
                     Margin="20,0,0,0"
+                    VerticalContentAlignment="Center"
                     Text="{Binding NodeId, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
 
-            <Grid Grid.Row="2" Margin="0,10">
+            <Grid Grid.Row="1" Margin="0,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" SharedSizeGroup="Label" />
                     <ColumnDefinition Width="400" />
@@ -74,17 +57,19 @@
                 <TextBox
                     Grid.Column="1"
                     Margin="20,0,0,0"
+                    VerticalContentAlignment="Center"
                     Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
 
             <TextBlock
-                Grid.Row="3"
+                Grid.Row="2"
                 HorizontalAlignment="Center"
                 Text="{Binding StatusMessage}" />
 
             <Button
-                Grid.Row="4"
-                Margin="5,0,0,0"
+                Grid.Row="3"
+                Margin="10,10"
+                Padding="15,0"
                 HorizontalAlignment="Center"
                 Command="{Binding WriteNodeCommand}"
                 Content="Write" />

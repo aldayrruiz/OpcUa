@@ -13,9 +13,11 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <controls:NavigationBar Grid.Row="0" DataContext="{Binding Navigator}" />
-        <ContentControl Grid.Row="1" Content="{Binding Navigator.CurrentViewModel}" />
+        <controls:AddressServerBar Grid.Row="1" DataContext="{Binding ServerAddressViewModel}" />
+        <ContentControl Grid.Row="2" Content="{Binding Navigator.CurrentViewModel}" />
     </Grid>
 </Window>

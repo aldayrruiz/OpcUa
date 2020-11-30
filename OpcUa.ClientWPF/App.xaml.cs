@@ -1,5 +1,10 @@
-﻿using OpcUa.ClientWPF.State.Navigators;
+﻿using Microsoft.Extensions.DependencyInjection;
+using OpcUa.ClientWPF.State;
+using OpcUa.ClientWPF.State.Clients;
+using OpcUa.ClientWPF.State.Connectors;
+using OpcUa.ClientWPF.State.Navigators;
 using OpcUa.ClientWPF.ViewModels;
+using OpcUa.ClientWPF.ViewModels.Factories;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,13 +22,35 @@ namespace OpcUa.ClientWPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+
+            IServiceProvider serviceProvider = CreateServiceProvider();
             Window window = new MainWindow();
-            
-            window.DataContext = new MainViewModel();
+
+            window.DataContext = serviceProvider.GetRequiredService<MainViewModel>();
             window.Show();
             
 
             base.OnStartup(e);
+        }
+
+        private IServiceProvider CreateServiceProvider()
+        {
+            IServiceCollection services = new ServiceCollection();
+
+            services.AddSingleton<IViewModelAbstractFactory, ViewModelAbstractFactory>();
+            services.AddSingleton<IViewModelFactory<ReadViewModel>, ReadViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<WriteViewModel>, WriteViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<CallViewModel>, CallViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<SubscribeViewModel>, SubscribeViewModelFactory>();
+
+            services.AddSingleton<IClientStore, ClientStore>();
+            services.AddSingleton<IConnector, Connector>();
+
+            services.AddScoped<ServerAddressViewModel>();
+            services.AddScoped<INavigator, Navigator>();
+            services.AddScoped<MainViewModel>();
+
+            return services.BuildServiceProvider();
         }
     }
 }
