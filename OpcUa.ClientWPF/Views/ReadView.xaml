@@ -23,6 +23,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -54,13 +55,16 @@
                 Command="{Binding ReadNodeCommand}"
                 Content="Read" />
 
-            <controls:NodeAttributesCard
+            <Label
                 Grid.Row="2"
+                HorizontalAlignment="Center"
+                Content="{Binding NodeStatus}" />
+
+            <controls:NodeAttributesCard
+                Grid.Row="3"
                 Padding="10,20"
                 DataContext="{Binding NodeAttributesViewModel}"
                 Loaded="NodeAttributesCard_Loaded" />
         </Grid>
-
-
     </Grid>
 </UserControl>

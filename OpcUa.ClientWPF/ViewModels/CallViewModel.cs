@@ -12,7 +12,6 @@ namespace OpcUa.ClientWPF.ViewModels
 
         public CallViewModel(IClientStore clientStore)
         {
-            Address = "https://localhost/"; // TODO: Make this variable available to all views. One single Address?
             CallMethodNodeCommand = new CallMethodNodeCommand(this, clientStore);
         }
 
@@ -42,20 +41,6 @@ namespace OpcUa.ClientWPF.ViewModels
             {
                 _y = value;
                 OnPropertyChanged(nameof(Y));
-            }
-        }
-
-        private string _address;
-        public string Address
-        {
-            get
-            {
-                return _address;
-            }
-            set
-            {
-                _address = value;
-                OnPropertyChanged(nameof(Address));
             }
         }
 

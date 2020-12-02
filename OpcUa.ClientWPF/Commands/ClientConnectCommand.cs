@@ -11,29 +11,31 @@ namespace OpcUa.ClientWPF.Commands
 {
     public class ClientConnectCommand : ICommand
     {
-        public readonly IConnector _connector;
+        public event EventHandler CanExecuteChanged;
+        private readonly IConnector _connector;
         private readonly IClientStore _clientStore;
-        public ServerAddressViewModel ServerAddressViewModel { get; set; }
-
-        public ClientConnectCommand(IConnector connector, ServerAddressViewModel serverAddressViewModel, IClientStore clientStore)
+        private readonly Func<object, bool> _canExecute;
+        private readonly ServerAddressViewModel _serverAddressViewModel;
+        
+        public ClientConnectCommand(IConnector connector, ServerAddressViewModel serverAddressViewModel, IClientStore clientStore, Func<object, bool> canExecute)
         {
             _connector = connector;
-            ServerAddressViewModel = serverAddressViewModel;
+            _serverAddressViewModel = serverAddressViewModel;
             _clientStore = clientStore;
+            _canExecute = canExecute;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
+        public bool CanExecute(object parameter) => _canExecute(parameter);
 
         public void Execute(object parameter)
         {
-            _connector.Connect(ServerAddressViewModel.ServerAddress);
-            ServerAddressViewModel.State = _clientStore.CurrentClient.State;
+            _connector.Connect(_serverAddressViewModel.ServerAddress);
+            _serverAddressViewModel.State = _clientStore.CurrentClient.State;
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -12,20 +12,13 @@ namespace OpcUa.ClientWPF.Commands
     public class CallMethodNodeCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
-
-        public CallViewModel CallViewModel;
+        private readonly CallViewModel _callViewModel;
         private readonly IClientStore _clientStore;
-        private OpcClient Client
-        {
-            get
-            {
-                return _clientStore.CurrentClient;
-            }
-        }
+        private OpcClient Client => _clientStore.CurrentClient;
 
         public CallMethodNodeCommand(CallViewModel callViewModel, IClientStore clientStore)
         {
-            CallViewModel = callViewModel;
+            _callViewModel = callViewModel;
             _clientStore = clientStore;
         }
 
@@ -42,18 +35,18 @@ namespace OpcUa.ClientWPF.Commands
                 {
                     object[] result = Client.CallMethod(
                         "ns=2;s=Machine/Calculator",                                /* NodeId of Owner Node */
-                        "ns=2;s=Machine/Calculator/" + CallViewModel.Method,     /* NodeId of Method Node */
-                        CallViewModel.X                                                 /* 2º parameter */,
-                        CallViewModel.Y                                                 /* 1º parameter */);
+                        "ns=2;s=Machine/Calculator/" + _callViewModel.Method,     /* NodeId of Method Node */
+                        _callViewModel.X                                                 /* 2º parameter */,
+                        _callViewModel.Y                                                 /* 1º parameter */);
 
-                    CallViewModel.Result = string.Format("{0}", result.GetValue(0));
+                    _callViewModel.Result = string.Format("{0}", result.GetValue(0));
 
-                    CallViewModel.ErrorMessage = string.Empty;
+                    _callViewModel.ErrorMessage = string.Empty;
 
                 }
                 catch (OpcException e)
                 {
-                    CallViewModel.ErrorMessage = e.Message;
+                    _callViewModel.ErrorMessage = e.Message;
                 }
             }
         }

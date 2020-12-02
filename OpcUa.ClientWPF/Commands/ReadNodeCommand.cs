@@ -12,34 +12,28 @@ namespace OpcUa.ClientWPF.Commands
     public class ReadNodeCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
-        public ReadViewModel ReadViewModel;
+        private readonly ReadViewModel _readViewModel;
         private readonly IClientStore _clientStore;
-        private OpcClient Client
-        {
-            get
-            {
-                return _clientStore.CurrentClient;
-            }
-        }
+        private readonly Func<object, bool> _canExecute;
 
-        public ReadNodeCommand(ReadViewModel readViewModel, IClientStore clientStore)
+        private OpcClient Client => _clientStore.CurrentClient;
+
+        public ReadNodeCommand(ReadViewModel readViewModel, IClientStore clientStore, Func<object, bool> canExecute)
         {
-            ReadViewModel = readViewModel;
+            _readViewModel = readViewModel;
             _clientStore = clientStore;
+            _canExecute = canExecute;
         }
 
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
+        public bool CanExecute(object parameter) => _canExecute(parameter);
 
         public void Execute(object parameter)
         {
             if (Client?.State == OpcClientState.Connected)
             {
-                if (!string.IsNullOrEmpty(ReadViewModel.NodeId))
+                if (!string.IsNullOrEmpty(_readViewModel.NodeId))
                 {
-                    string nodeId = ReadViewModel.NodeId;
+                    string nodeId = _readViewModel.NodeId;
 
                     // Read Attributes 
                     OpcValue value = Client.ReadNode(nodeId);
@@ -47,14 +41,19 @@ namespace OpcUa.ClientWPF.Commands
 
                     if (value.Status.IsGood && displayName.Status.IsGood)
                     {
-                        ReadViewModel.NodeAttributesViewModel = NodeAttributesViewModel.LoadNodeAttributes(displayName, value);
+                        _readViewModel.NodeAttributesViewModel = NodeAttributesViewModel.LoadNodeAttributes(displayName, value);
                     }
                     else
                     {
-                        // Show a message error
+                        _readViewModel.NodeStatus = value.Status.Description;
                     }
                 }
             }
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

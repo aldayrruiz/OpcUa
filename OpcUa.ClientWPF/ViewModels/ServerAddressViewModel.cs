@@ -22,8 +22,12 @@ namespace OpcUa.ClientWPF.ViewModels
             {
                 _serverAddress = value;
                 OnPropertyChanged(nameof(ServerAddress));
+                OnPropertyChanged(nameof(IsAddressValid));
+                ClientConnectCommand.RaiseCanExecuteChanged();
             }
         }
+
+        private bool IsAddressValid => ValidateAddressServer(ServerAddress);
 
         private OpcClientState _state;
         public OpcClientState State
@@ -43,7 +47,18 @@ namespace OpcUa.ClientWPF.ViewModels
 
         public ServerAddressViewModel(IConnector connector, IClientStore clientStore)
         {
-            ClientConnectCommand = new ClientConnectCommand(connector, this, clientStore);
+            ClientConnectCommand = new ClientConnectCommand(connector, this, clientStore, 
+                canExecute: (_) => IsAddressValid);
+        }
+
+        private bool ValidateAddressServer(string addressServer)
+        {
+            if (Uri.TryCreate(addressServer, UriKind.Absolute, out var result)
+                && (result.Scheme == "opc.tcp" || result.Scheme == "https"))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -1,9 +1,13 @@
-﻿using Opc.UaFx.Client;
+﻿using Opc.UaFx;
+using Opc.UaFx.Client;
 using OpcUa.ClientWPF.State.Clients;
+using OpcUa.ClientWPF.ViewModels;
+using OpcUa.ClientWPF.Windows;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace OpcUa.ClientWPF.State.Connectors
 {
@@ -32,7 +36,15 @@ namespace OpcUa.ClientWPF.State.Connectors
         public void Connect(string serverAddress)
         {
             CurrentClient = new OpcClient(serverAddress);
-            CurrentClient.Connect();
+            try
+            {
+                CurrentClient.Connect();
+            }
+            catch (OpcException e)
+            {
+                Window popup = new InvalidServerAddress();
+                popup.ShowDialog();
+            }
         }
 
         public void Disconnect()
